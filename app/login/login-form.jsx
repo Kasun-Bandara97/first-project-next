@@ -6,10 +6,34 @@ import { useState } from "react";
 export default function LoginForm() {
   const[email, setEmail]=useState("");  
   const[password, setPassword]=useState("");
+  const[emailError,setEmailError]=useState("");
+  const[passwordError,setPasswordError]=useState("");
+
+
+  const validForm =()=>{
+    if(!email){
+      setEmailError("Email is required");
+      return false;
+    }else{
+      setEmailError("");
+    }
+    if(!password){
+      setPasswordError("Password is required");
+      return false;
+    }else{
+      setPasswordError("")
+    }
+
+    return true;
+  }
 
   const handSubmit = (e)=>{
     e.preventDefault();
-    console.log("Form Data :",{email:email,password:password});
+
+    const isvalid = validForm();
+    if (isvalid) {
+      console.log("Form Data :",{email:email,password:password});
+    };
   }
   return (
     <div className=" w-[380px] mx-auto ">
@@ -32,6 +56,7 @@ export default function LoginForm() {
                 className="bg-gray-50 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 text-gray-900 ring-1 ring-offset-2 block w-full "
                 placeholder=" Enter your Email Here"
               />
+              {emailError && <div className="text-red-600 text-sm mt-2 ms-1">{emailError}</div>}
             </div>
             <div>
               <label
@@ -49,6 +74,7 @@ export default function LoginForm() {
                 className="bg-gray-50 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 text-gray-900 ring-1 ring-offset-2 block w-full "
                 placeholder=" Enter your Password Here"
               />
+              {passwordError && <div className="text-red-600 text-sm mt-2 ms-1">{passwordError}</div>} 
             </div>
             {/*remember me */}
             <div className="flex ">
