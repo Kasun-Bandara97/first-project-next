@@ -11,18 +11,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react"
 import { useState } from "react";
 import { registerUser } from "../libs/apis/server";
 
-
 const Defaul_Error = {
   error: false,
-  message:"",
+  message: "",
 };
 
 // keep this as the client component (functional component)
 export default function RegisterForm() {
-  const [error, setError]= useState(Defaul_Error);
+  const [error, setError] = useState(Defaul_Error);
+  const [isLoading, setLoading] = useState(false);
+
   const handleSubmitForm = async (event) => {
     event?.preventDefault();
     const formData = new FormData(event?.currentTarget);
@@ -33,12 +35,17 @@ export default function RegisterForm() {
 
     //console.log("submited", { name, email, password, confirmPassword });
     //if (name && email && password && confirmPassword ){
-      if(password === confirmPassword){
-        setError(Defaul_Error);
-        await registerUser({name,email,password});
-      }else{
-        setError({error:true ,message:"Password doesn't match"});
+    if (password === confirmPassword) {
+      setError(Defaul_Error);
+      setLoading(true);
+      const registerResp = await registerUser({ name, email, password });
+      setLoading(false);
+      if (registerResp?.error) {
+        setError({ error: true, message: registerResp.error });
       }
+    } else {
+      setError({ error: true, message: "Password doesn't match" });
+    }
     //}
     //console.log("Error ",error);
   };
@@ -86,7 +93,11 @@ export default function RegisterForm() {
                 />
               </div>
               <div className="flex justify-center">
-                {error?.error && (<span className="text-red-600 text-xs text-center">{error.message}</span>)}
+                {error?.error && (
+                  <span className="text-red-600 text-xs text-center">
+                    {error.message}
+                  </span>
+                )}
               </div>
               <div className="flex justify-center gap-1 text-sm">
                 Allready have an accoun ?{" "}
@@ -98,7 +109,8 @@ export default function RegisterForm() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <Button className="flex-1" type="submit">
+            <Button className="flex-1" type="submit" disabled={isLoading}>
+            {isLoading && <Loader2 className="animate-spin" />}
               Register
             </Button>
           </CardFooter>

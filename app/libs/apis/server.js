@@ -14,9 +14,24 @@ export const loginUser = async (loginData) => {
  export const registerUser = async (formData)=>{
   try{ 
     const response = await api.post("register",{json: formData});
-    console.log("Registration Response :", response);
+    if(response.ok){
+      return response.json();
+
+    }else{
+      return undefined;
+    }
   }catch(error){
-    console.log("Registraion error :",error);
+    const status = error.response.status;
+    const responseBody= await error.response.json();
+
+    if (status && responseBody){
+      if (status === 409){
+        return responseBody;
+      }
+      return undefined;
+    }
+    return undefined
+    
   }
  };
 export const getMovies = async() => {

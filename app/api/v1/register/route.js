@@ -21,31 +21,35 @@ export const POST = async (req) => {
 
     if (exitingUser) {
       return NextResponse.json(
-        { error: "User with this emailalready exist." },
+        { error: "User with this email already exist." },
         { status: 409 }
       );
     }
-    const hashedPassword= await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     console.log("Password", hashedPassword);
 
     const result = await db.collection("users").insertOne({
       name,
       email,
-      password :hashedPassword,
-      createdAt:new Date(),
+      password: hashedPassword,
+      createdAt: new Date(),
     });
-    if (result && result.acknowledged){
-      return NextResponse.json({ success: true, name, email, password });
-
-    }else{
+    if (result && result.acknowledged) {
+      return NextResponse.json({
+        success: true,
+        user: {
+          userId: result.insertedId,
+          name,
+          email,
+        },
+      });
+    } else {
       return NextResponse.json(
-        { error: "Internal servet error" },
+        { error: "User registration failed" },
         { status: 500 }
       );
     }
-    
   } catch (error) {
-    
     return NextResponse.json(
       { error: "Internal servet error" },
       { status: 500 }
