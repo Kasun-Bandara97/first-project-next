@@ -13,7 +13,10 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react"
 import { useState } from "react";
-import { registerUser } from "../libs/apis/server";
+import { registerUser } from "../../lib/apis/server";
+import { useToast } from "@/hooks/use-toast"
+import { ToastAction } from "@/components/ui/toast"
+
 
 const Defaul_Error = {
   error: false,
@@ -24,6 +27,7 @@ const Defaul_Error = {
 export default function RegisterForm() {
   const [error, setError] = useState(Defaul_Error);
   const [isLoading, setLoading] = useState(false);
+  const { toast } = useToast()
 
   const handleSubmitForm = async (event) => {
     event?.preventDefault();
@@ -42,6 +46,11 @@ export default function RegisterForm() {
       setLoading(false);
       if (registerResp?.error) {
         setError({ error: true, message: registerResp.error });
+      }else{
+        toast({
+          description: "Your message has been sent.",
+        });
+      
       }
     } else {
       setError({ error: true, message: "Password doesn't match" });
