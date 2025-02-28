@@ -15,7 +15,9 @@ import { Loader2 } from "lucide-react"
 import { useState } from "react";
 import { registerUser } from "../../lib/apis/server";
 import { useToast } from "@/hooks/use-toast"
-import { ToastAction } from "@/components/ui/toast"
+import { ToastAction } from "@/components/ui/toast";
+
+import { signUp } from "@/lib/auth-client";
 
 
 const Defaul_Error = {
@@ -41,16 +43,38 @@ export default function RegisterForm() {
     //if (name && email && password && confirmPassword ){
     if (password === confirmPassword) {
       setError(Defaul_Error);
-      setLoading(true);
-      const registerResp = await registerUser({ name, email, password });
-      setLoading(false);
-      if (registerResp?.error) {
-        setError({ error: true, message: registerResp.error });
-      }else{
-        toast({
-          description: "Your message has been sent.",
-        });
+      // setLoading(true);
+      // const registerResp = await registerUser({ name, email, password });
+      // setLoading(false);
+      // if (registerResp?.error) {
+      //   setError({ error: true, message: registerResp.error });
+      // }else{
+      //   toast({
+      //     description: "Your message has been sent.",
+      //   });
       
+      // }
+      const {data, error} = await signUp.email({
+        email : email,
+        password : password,
+        name: name,
+        image: undefined,
+      },{
+        onRequest:() =>{
+
+        },
+        onSuccess: (ctx) =>{
+          console.log("onsuccess",ctx);
+        },
+        onError: (ctx) =>{
+          
+          if(ctx){
+            setError({error:true, message:ctx.error.message});
+          }
+        },
+      })
+      if (data){
+        console.log("data",data);
       }
     } else {
       setError({ error: true, message: "Password doesn't match" });
