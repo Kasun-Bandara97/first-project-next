@@ -1,11 +1,11 @@
-import { clientPromise } from "@/lib/mongodb";
+import { db } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 export const POST = async (req) => {
   try {
     const { name, email, password } = await req.json();
-    console.log(name, email, password);
+    
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -13,9 +13,6 @@ export const POST = async (req) => {
         { status: 400 }
       );
     }
-
-    const client = await clientPromise();
-    const db = client.db("sample_mflix");
 
     const exitingUser = await db.collection("users").findOne({ email });
 
@@ -26,7 +23,6 @@ export const POST = async (req) => {
       );
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Password", hashedPassword);
 
     const result = await db.collection("users").insertOne({
       name,

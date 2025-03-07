@@ -1,7 +1,9 @@
-import { getMovies } from "@/lib/apis/server";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { IoIosStarHalf } from "react-icons/io";
+import { Suspense } from "react";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
+import Link from "next/link";
+import MovieData from "./movie-data";
+import { Shell } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -11,62 +13,37 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-
 export default async function MoviesPage() {
-  const movies = await getMovies();
-  console.log("Movies :", movies);
+  
 
   return (
-    
-      <div className="space-y-4">
-        <h1 className="text-3xl font-bold">Movies</h1>
-        <div className="grid grid-cols-4 gap-4">
-          {movies?.length &&
-            movies.map((movie) => (
-              <div key={movie?._id} className="h-[500px]  ">
-                <Card className="h-full">
-                  <CardHeader>
-                    <CardTitle className="">{movie?.title} </CardTitle>
-                    <CardDescription className="text-xs ">
-                      {movie?.year ?? "N/A"}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-center bg-black w-full h-[220px] mb-4 rounded">
-                      <Image
-                        src={movie?.poster}
-                        alt={movie?.title}
-                        width={200}
-                        height={400}
-                        className="h-full w-auto object-contain"
-                        priority={true}
-                      />
-                    </div>
-                    <div className="flex flex-col justify-between h-[154px]">
-                      <p className="line-clamp-3">{movie?.plot}</p>
-                      <div className="text-sm text-blue-900 font-semibold">
-                        {movie?.genres?.length && movie?.genres?.join(" / ")}
-                      </div>
-                      <div className="flex flex-row justify-between items-center">
-                        <Badge variant="success" className="font-medium">
-                          Rated: {movie?.rated ?? "N/A"}
-                        </Badge>
-                        <div className="flex flex-row gap-1 items-center" title="Imdb Rating">
-                          <IoIosStarHalf className="text-yellow-700"/>
-                          <span className="text-sm font-semibold">{movie?.imdb?.rating ?? 0}/10</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                  {/* <CardFooter>
-                    <p>Card Footer</p>
-                  </CardFooter> */}
-                </Card>
-              </div>
-            ))}
-        </div>
+    <div className="space-y-4">
+      <div className="flex justify-end">
+        <Link href="/movies">
+          <Button variant="outline">
+            <Eye /> View as user
+          </Button>
+        </Link>
       </div>
-    
+      <Card>
+        <CardHeader>
+          <CardTitle>Movies Management</CardTitle>
+          <CardDescription>
+            View and manage all the listed movie entries.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+        <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-[186px]">
+                <Shell className="animate-spin duration-1000 text-green-600" />
+              </div>
+            }
+          >
+            <MovieData />
+          </Suspense>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
-
