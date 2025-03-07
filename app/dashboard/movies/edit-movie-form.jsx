@@ -20,8 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { GENRES, RATINGS } from "@/lib/constants";
 import { MultiSelect } from "@/components/multi-select";
+import { GENRES } from "@/lib/constants";
+import { RATINGS } from "@/lib/constants";
 
 export default function EditMovieForm({
   movie,
