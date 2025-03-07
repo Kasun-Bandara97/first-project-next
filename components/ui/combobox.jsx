@@ -2,6 +2,7 @@ import * as ComboboxPrimitive from "@diceui/combobox";
 import { Check, ChevronDown, X } from "lucide-react";
 import * as React from "react";
 
+
 import { cn } from "@/lib/utils";
 
 const Combobox = ComboboxPrimitive.Root;
@@ -103,14 +104,14 @@ const ComboboxContent = React.forwardRef(({ className, children, ...props }, ref
 ));
 ComboboxContent.displayName = ComboboxPrimitive.Content.displayName;
 
-const ComboboxProgress = React.forwardRef(({ className, ...props }, ref) => (
+const ComboboxProgress = React.forwardRef(({ className, ...props }, ref) => {
   <ComboboxPrimitive.Progress
     ref={ref}
     className={cn("py-6 text-center text-sm", className)}
     {...props}>
     Loading...
   </ComboboxPrimitive.Progress>
-));
+});
 
 const ComboboxEmpty = React.forwardRef(({ className, ...props }, ref) => (
   <ComboboxPrimitive.Empty

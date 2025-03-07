@@ -127,7 +127,7 @@ export default function LoginForm() {
           </div>
           {/* create account*/}
           <div className="text-sm font-medium text-gray-500 text-center">
-            Doesn't have account yet?{" "}
+            Does not have account yet?{" "}
             <a
               href="/register"
               className="ml-auto text-sm text-blue-500 hover:underline"

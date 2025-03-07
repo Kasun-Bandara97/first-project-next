@@ -20,9 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { MultiSelect } from "@/components/multi-select";
 import { GENRES } from "@/lib/constants";
 import { RATINGS } from "@/lib/constants";
+import { MultiSelect } from "@/components/multi-select";
 
 export default function EditMovieForm({
   movie,
@@ -107,7 +107,7 @@ export default function EditMovieForm({
             <MultiSelect
               list={genresList}
               placeholder="Select movie genres"
-              selectesItems={genres}
+              selectedItems={genres}
               onValueChange={setGenres}
             />
             </div>
