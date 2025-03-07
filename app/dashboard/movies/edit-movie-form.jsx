@@ -107,7 +107,7 @@ export default function EditMovieForm({
             <MultiSelect
               list={genresList}
               placeholder="Select movie genres"
-              selectedItems={genres}
+              selectesItems={genres}
               onValueChange={setGenres}
             />
             </div>
